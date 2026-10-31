@@ -11,7 +11,7 @@ function saring() {
   const kategori = filterKategori.value;
   return KARYA.filter((k) =>
     (kategori === 'semua' || k.kategori === kategori) &&
-    k.judul.includes(kata));
+    k.judul.toLowerCase().includes(kata.toLowerCase()));
 }
 
 function kartu(k) {
@@ -35,20 +35,21 @@ function kartu(k) {
 function tampil() {
   const hasil = saring();
   galeri.replaceChildren(...hasil.map(kartu));
-  jumlah.textContent = `Menampilkan ${KARYA.length} dari ${KARYA.length} karya`;
+  jumlah.textContent = `Menampilkan ${hasil.length} dari ${KARYA.length} karya`;
 }
 
-function pasangDetail() {
-  galeri.querySelectorAll('button[data-id]').forEach((tombol) => {
-    tombol.addEventListener('click', () => {
-      const k = KARYA.find((x) => x.id === Number(tombol.dataset.id));
-      detail.hidden = false;
-      detail.textContent = `${k.judul} — ${k.kategori}, dibuat oleh ${k.pembuat} (${k.tahun}).`;
-    });
-  });
+function tampilkanDetail(tombol) {
+  const k = KARYA.find((x) => x.id === Number(tombol.dataset.id));
+  if (!k) return;
+  detail.hidden = false;
+  detail.textContent = `${k.judul} — ${k.kategori}, dibuat oleh ${k.pembuat} (${k.tahun}).`;
 }
 
 tampil();
-pasangDetail();
 cari.addEventListener('input', tampil);
-document.querySelector('#filter-kategori').addEventListener('change', tampil);
+filterKategori.addEventListener('change', tampil);
+// delegasi: satu listener di #galeri tetap hidup walau kartu dirender ulang
+galeri.addEventListener('click', (event) => {
+  const tombol = event.target.closest('button[data-id]');
+  if (tombol) tampilkanDetail(tombol);
+});
