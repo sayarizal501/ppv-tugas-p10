@@ -10,16 +10,16 @@ di browser.
 Ikon logo pada navbar tampil rusak. Tab Network mencatat permintaan
 `img/logo.svg` dengan status 404.
 
-Hipotesis pertama adalah berkas SVG-nya rusak. Hipotesis tersebut gugur karena
+Dugaan pertama: berkas SVG-nya rusak. Dugaan itu gugur karena
 `assets/logo.svg` dapat dibuka langsung di browser dengan status 200.
 
 Penyebabnya ada pada `index.html:13`, yaitu atribut `src` mengarah ke folder
 `img/`, padahal berkas logo disimpan di folder `assets/`.
 
 Perbaikan aset dikerjakan pada cabang yang sama dalam dua commit terpisah.
-Commit `1d2d0f3` (`chore`) mengganti nama `assets/logo.svg` menjadi
+Commit `4c7ab0a` (`chore`) mengganti nama `assets/logo.svg` menjadi
 `assets/logo-katalog.svg` sesuai aturan huruf kecil dan tanda hubung. Commit
-`4509851` (`fix`) mengubah `src` pada `index.html:13` agar menunjuk ke berkas
+`2e1bc36` (`fix`) mengubah `src` pada `index.html:13` agar menunjuk ke berkas
 tersebut, sekaligus memasang gambar yang sama sebagai favicon supaya browser
 tidak lagi meminta `favicon.ico`.
 
@@ -30,8 +30,8 @@ Setelah halaman dimuat ulang, tab Network tidak lagi menampilkan 404.
 Kartu karya tampil memanjang ke bawah satu per satu walaupun lebar layar
 mencukupi untuk beberapa kolom.
 
-Pada tab Elements, elemen `#galeri` hanya memiliki `class="g-3"`. Hipotesis
-awalnya kelas `g-3` hilang, tetapi hipotesis itu gugur karena kelas tersebut
+Pada tab Elements, elemen `#galeri` hanya memiliki `class="g-3"`. Awalnya
+dikira kelas `g-3` yang hilang, tetapi dugaan itu gugur karena kelas tersebut
 hanya mengatur jarak antar elemen dan bukan pembentuk grid.
 
 Penyebabnya, kelas `row` belum ada pada `index.html:34`. Setelah diubah menjadi
@@ -48,10 +48,10 @@ Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
     at main.js:54:43
 ```
 
-Pesan tersebut menandakan `querySelector` mengembalikan `null`. Hipotesis awal
-adalah elemen belum siap atau urutan pemuatan script (`defer`) salah. Hipotesis
-itu gugur setelah elemen lain diperiksa dan semuanya ditemukan, sehingga DOM
-sudah siap.
+Pesan tersebut menandakan `querySelector` mengembalikan `null`. Awalnya
+dikira elemennya belum siap karena urutan pemuatan script (`defer`). Dugaan itu
+gugur setelah elemen lain yang dipanggil dengan cara sama semuanya ditemukan,
+jadi DOM sudah siap.
 
 Penyebab sebenarnya ada pada `main.js:54`, yaitu selektor `#filter-kategori`,
 sedangkan id pada HTML adalah `filterKategori`. Selektor diganti memakai
@@ -73,8 +73,8 @@ terlihat pada kode. Pada `main.js:38` angka pertama masih diambil dari
 Tombol Detail bekerja saat halaman pertama kali dimuat, tetapi tidak merespons
 setelah pencarian atau penyaringan dilakukan.
 
-Hipotesis awal adalah listener tidak terpasang sama sekali, tetapi hipotesis itu
-gugur karena tombol berfungsi saat halaman baru dimuat. Pada tab Event
+Awalnya dikira listener tidak terpasang sama sekali, tetapi dugaan itu gugur
+karena tombol masih berfungsi saat halaman baru dimuat. Pada tab Event
 Listeners, listener hanya terpasang pada tombol hasil render pertama. Fungsi
 `replaceChildren()` mengganti seluruh tombol, sehingga listener yang lama ikut
 hilang.
@@ -89,9 +89,9 @@ tombol Detail berfungsi pada kedua kondisi.
 Kata kunci "animasi" tidak menghasilkan karya, padahal terdapat karya berjudul
 "Animasi ...". Jika ditulis "Animasi", hasilnya dua kartu.
 
-Hipotesis awal adalah data judulnya kosong, tetapi setelah diperiksa datanya
-lengkap. Penyebabnya ada pada `main.js:14`, yaitu perbandingan `includes()`
-dilakukan tanpa mengubah kedua sisi menjadi huruf kecil.
+Sempat dikira ada judul yang datanya kosong, tetapi setelah diperiksa semua
+judul terisi lengkap. Penyebabnya ada pada `main.js:14`, yaitu perbandingan
+`includes()` dilakukan tanpa mengubah kedua sisi menjadi huruf kecil.
 
 Setelah ditulis `k.judul.toLowerCase().includes(kata.toLowerCase())`, kata kunci
 "animasi" maupun "Animasi" sama-sama menghasilkan dua kartu.
@@ -100,12 +100,12 @@ Setelah ditulis `k.judul.toLowerCase().includes(kata.toLowerCase())`, kata kunci
 
 | Bug | Alat | Berkas:baris | Commit |
 |---|---|---|---|
-| G1 | Network | index.html:13 | `4509851` |
-| G2 | Elements | index.html:34 | `1bc4c61` |
-| G3 | Console | main.js:54 | `bacad4e` |
-| G4 | Elements | main.js:38 | `e03d85c` |
-| G5 | Event Listeners | main.js:41-50 | `83b1d45` |
-| G6 | Console | main.js:14 | `d7808b1` |
+| G1 | Network | index.html:13 | `2e1bc36` |
+| G2 | Elements | index.html:34 | `0200d4d` |
+| G3 | Console | main.js:54 | `bbcc2ff` |
+| G4 | Elements | main.js:38 | `a6183ab` |
+| G5 | Event Listeners | main.js:41-50 | `6728f2e` |
+| G6 | Console | main.js:14 | `74881ea` |
 
 Dari enam bug, lima hipotesis ternyata gugur (G1, G2, G3, G5, dan G6),
 sedangkan pada G4 penyebabnya langsung terlihat pada kode.
